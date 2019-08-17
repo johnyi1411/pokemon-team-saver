@@ -12,13 +12,17 @@ CREATE TABLE user (
 
 CREATE TABLE pokemon_instance (
     id INTEGER AUTO_INCREMENT,
+    pokemon_id INTEGER,
+    user_id INTEGER,
     name VARCHAR(64),
     level INTEGER,
-    pokemon_id INTEGER,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id)
+        REFERENCES user(id)
+        ON DELETE CASCADE
 );
 
-CREATE TABLE team (
+/* CREATE TABLE team (
     id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
     pokemon1_id INTEGER DEFAULT null,
@@ -49,11 +53,11 @@ CREATE TABLE team (
     FOREIGN KEY (pokemon6_id)
         REFERENCES pokemon_instance(id)
         ON DELETE SET NULL
-);
+); */
 
 CREATE TABLE session (
-    hash VARCHAR(64),
     id INTEGER AUTO_INCREMENT,
+    hash VARCHAR(64),
     user_id INTEGER,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id)

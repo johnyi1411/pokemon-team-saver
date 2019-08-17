@@ -2,15 +2,16 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const path = require('path');
+const auth = require('./middleWare/createSession.js');
 const db = require('./../database/databaseHelpers.js');
 const cookieParser = require('cookie-parser');
 
 app.use(require('morgan')('dev'));
 app.use(cookieParser())
 app.use(express.static(__dirname + '/../public'))
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(auth.createSession);
 
 app.get('/createUser', (req, res, next) => {
     /*db.createUser('test', () => {

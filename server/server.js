@@ -68,16 +68,18 @@ app.get('/getAllPokemon', (req, res, next) => {
 })
 
 app.get('/testCookies', auth.verifySession, (req, res, next) => {
-    console.log('cookies: ', req.cookies);
-    res.end();
+  console.log('cookies: ', req.cookies);
+  res.end();
 })
 
 app.get('/login', (req, res, next) => {
-    res.send('login page');
+  res.send('login page');
 })
 
 app.post('/login', (req, res, next) => {
-    res.send('login post');
+  res.send('login post');
+});
+
 app.get('/testSQL', (req, res, next) => {
 
     db.createUser('test', () => {
@@ -108,4 +110,4 @@ app.post('/addPokemonToUser', (req, res, next) => {
 
 app.listen(port, () => {
     console.log("Listening on port:", port);
-});
+}); 

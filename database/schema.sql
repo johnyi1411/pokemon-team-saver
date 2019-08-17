@@ -5,14 +5,14 @@ CREATE DATABASE IF NOT EXISTS pokemonApp;
 USE pokemonApp;
 
 CREATE TABLE user (
-    username TEXT UNIQUE,
+    username VARCHAR(64) UNIQUE,
     id INTEGER AUTO_INCREMENT,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE pokemon_instance (
     id INTEGER AUTO_INCREMENT,
-    name TEXT,
+    name VARCHAR(64),
     level INTEGER,
     pokemon_id INTEGER,
     PRIMARY KEY (id)
@@ -52,7 +52,7 @@ CREATE TABLE team (
 );
 
 CREATE TABLE session (
-    hash TEXT,
+    hash VARCHAR(64),
     id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
     PRIMARY KEY (id),

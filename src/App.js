@@ -40,6 +40,9 @@ class App extends React.Component {
       <div className="App">
         <Search searchOnChange={this.searchOnChange}/>
         <div>
+          {/* <CurrentTeam/> */}
+        </div>
+        <div>
           {pokemons}
         </div>
       </div>

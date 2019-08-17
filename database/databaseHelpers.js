@@ -27,7 +27,7 @@ var getUserIdByUsername = function(username, cb) {
         if (err) {
             cb(err);
         } else if (!results.length) {
-            cb(err);
+          cb('no results', null);
         } else {
           var userId = results[0].id;
         
@@ -74,9 +74,9 @@ var getSessionByUsername = function(username, cb) {
             if (err) {
                 cb(err);
             } else if (!results.length) {
-                cb(err);
+                cb('no results', null);
             } else {
-              console.log("Get Session Results: ", results);
+              console.log("Get Session By User Results: ", results);
               cb(null, results);
             }
         });
@@ -84,6 +84,19 @@ var getSessionByUsername = function(username, cb) {
     });
 }
 
+var getSession = function(hash, cb) {
+  db.query('SELECT * FROM session WHERE hash = ?', [hash], (err, results) => {
+    if(err) {
+      cb(err);
+    } else if (!results.length) {
+      cb('no results', null);
+    } else {
+      console.log('Get Session By Hash Results ', results);
+    }
+  })
+}
+
 module.exports.createUser = createUser;
 module.exports.createSession = createSession;
 module.exports.getSessionByUsername = getSessionByUsername;
+module.exports.getSession = getSession;

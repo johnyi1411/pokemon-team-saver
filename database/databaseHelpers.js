@@ -8,6 +8,17 @@ var db = mysql.createConnection({
     database: config.database
 });
 
+/*
+  ./../config/config.js FORMAT:
+
+    config = {
+    host: 'localhost',
+    user: 'root',
+    password: 'abc12345',
+    database: 'pokemonApp'
+}
+*/
+
 db.connect();
 
 var createUser = function(username, cb) {

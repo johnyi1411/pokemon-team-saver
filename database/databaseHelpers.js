@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const config = require('./../config/config.js');
-console.log(config)
 
 var db = mysql.createConnection({
     host: config.host,
@@ -37,7 +36,7 @@ var getUserIdByUsername = function(username, cb) {
     })
 }
 
-var createSession = function(username, hash, cb) {
+var createSessionWithUser = function(username, hash, cb) {
     getUserIdByUsername(username, (err, userId) => {
       if (err) {
         console.log(err);
@@ -53,6 +52,17 @@ var createSession = function(username, hash, cb) {
         });
       }
     });
+}
+
+var createSession = function(hash, cb) {
+  db.query('INSERT INTO session (hash) VALUES (?, ?)', [hash], (err, results) => {
+      if (err) {
+          throw err;
+      } else {
+        console.log("Create Session Results: ", results);
+        cb(null, results);
+      }
+  });
 }
 
 var getSessionByUsername = function(username, cb) {

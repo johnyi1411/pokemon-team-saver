@@ -6,3 +6,10 @@ module.exports.createHash = (data, salt = '') => {
   return shasum.digest('hex');
 }
 
+module.exports.compareHash = (attempted, stored, salt) => {
+  return stored === this.createHash(attempted, salt);
+};
+
+module.exports.createRandom32String = () => {
+  return crypto.randomBytes(32).toString('hex');
+};

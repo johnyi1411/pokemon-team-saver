@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Search from './components/Search'
 import Pokemon from './components/Pokemon'
 import searchPokemonAPI from './lib/searchPokemonAPI'
@@ -20,7 +19,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // searchPokemonAPI.get(pokemons => this.setState({pokemons}));
+    searchPokemonAPI.get(pokemons => this.setState({pokemons}));
   }
   
 

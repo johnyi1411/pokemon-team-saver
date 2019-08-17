@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const searchPokemonAPI = {
   get: (callback) => {
-    axios.get('/')
+    axios.get('/getPokemon', {params: {input: ''}})
       .then(response => {
         callback(response);
       })

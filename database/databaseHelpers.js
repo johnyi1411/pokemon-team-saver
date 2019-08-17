@@ -100,3 +100,4 @@ module.exports.createUser = createUser;
 module.exports.createSession = createSession;
 module.exports.getSessionByUsername = getSessionByUsername;
 module.exports.getSession = getSession;
+module.exports.createSessionWithUser = createSessionWithUser;

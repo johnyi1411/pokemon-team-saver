@@ -21,17 +21,19 @@ app.get('/createUser', (req, res, next) => {
 });
 
 //Return pokemon data (serach by id)
-app.get('/', (req, res, next) => {
-
+app.get('/getPokemon', (req, res, next) => {
+    console.log(req);
     var searchParam = req.body.input.toString().toLowerCase();
+    console.log(req.body)
     console.log("SearchParam:", `https://pokeapi.co/api/v2/pokemon/${searchParam}`);
 
-    req.get(`https://pokeapi.co/api/v2/pokemon/${searchParam}`, (err, data) => {
+    req.get(`http://pokeapi.co/api/v2/pokemon/${searchParam}`, (err, data) => {
         if (err) {
             throw err;
         }
+        console.log('returning');
         if (data.body !== 'Not Found') {
-            res.send(JSON.parse(data.body).toString());
+            res.end(JSON.parse(data.body).toString());
         } else {
             res.end('Not Found')
         }

@@ -13,6 +13,8 @@ app.use(express.static(__dirname + '/../public'))
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+// ******************* GET *******************
+
 app.get('/createUser', (req, res, next) => {
     /*db.createUser('test', () => {
         db.createSession('test', 'aaaaaa', () => {
@@ -69,6 +71,35 @@ app.get('/testCookies', (req, res, next) => {
     console.log('length: ', Object.keys(req.cookies).length);
     res.cookie('testCookie', 123456789);
     res.end();
+})
+
+app.get('/testSQL', (req, res, next) => {
+
+    db.createUser('test', () => {
+        db.createPokemonInstance('25', 'test', null, null, (err, results) => {
+            console.log("ERROR:", err);
+            console.log("RESULTS:", results);
+            res.end('test');
+        })
+    })
+})
+
+// ******************* POST *******************
+app.post('/addPokemonToUser', (req, res, next) => {
+    console.log(req.body)
+    var user = req.body.username;
+    var pokemonId = req.body.pokemonId;
+    var name = req.body.name;
+    var level = req.body.level;
+
+    db.createPokemonInstance(pokemonId, user, name, level, (err, results) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Pokemon instance created");
+        }
+    })
+    
 })
 
 app.listen(port, () => {

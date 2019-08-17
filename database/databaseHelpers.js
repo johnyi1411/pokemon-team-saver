@@ -103,6 +103,7 @@ var getSession = function(hash, cb) {
       cb('no results', null);
     } else {
       console.log('Get Session By Hash Results ', results);
+      cb(null, results);
     }
   })
 }

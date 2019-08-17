@@ -38,10 +38,13 @@ module.exports.createSession = (req, res, next) => {
           next();
         })
       //valid cookie
-      } else {
-        req.session = {
+    } else {
+      let userId = results[0].id;
+      req.session = {
           hash: req.cookies.sessionHash,
+          userId
         }
+        next();
       }
     });
   }

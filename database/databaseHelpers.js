@@ -8,9 +8,20 @@ var db = mysql.createConnection({
     database: config.database
 });
 
+/*
+  ./../config/config.js FORMAT:
+
+    config = {
+    host: 'localhost',
+    user: 'root',
+    password: 'abc12345',
+    database: 'pokemonApp'
+}
+*/
+
 db.connect();
 
-var createUser = function(username, cb) {
+var createUser = (username, cb) => {
     db.query('INSERT INTO user (username) VALUES(?)', [username], (err, results) => {
         if (err) {
             cb(err)
@@ -21,13 +32,26 @@ var createUser = function(username, cb) {
     })
 }
 
+var createPokemonInstance = (pokemon_id, username, name, level, cb) => {
+  getUserIdByUsername(username, (err, userId) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('userID:', userId);
+      db.query('INSERT INTO pokemon_instance (pokemon_id, user_id, name, level) VALUES (?, ?, ?, ?)', [pokemon_id, userId, name, level], (err, results) => {
+        cb(err, results)
+      });
+    }
+  });
+} 
+
 //Helper function to get User ID
-var getUserIdByUsername = function(username, cb) {
+var getUserIdByUsername = (username, cb) => {
     db.query('SELECT id FROM user WHERE username = ?', [username], (err, results) => {
         if (err) {
             cb(err);
         } else if (!results.length) {
-            cb(err);
+          cb('no results', null);
         } else {
           var userId = results[0].id;
         
@@ -36,7 +60,7 @@ var getUserIdByUsername = function(username, cb) {
     })
 }
 
-var createSessionWithUser = function(username, hash, cb) {
+var createSessionWithUser = (username, hash, cb) => {
     getUserIdByUsername(username, (err, userId) => {
       if (err) {
         console.log(err);
@@ -54,8 +78,9 @@ var createSessionWithUser = function(username, hash, cb) {
     });
 }
 
+
 var createSession = function(hash, cb) {
-  db.query('INSERT INTO session (hash) VALUES (?, ?)', [hash], (err, results) => {
+  db.query('INSERT INTO session (hash) VALUES (?)', [hash], (err, results) => {
       if (err) {
           throw err;
       } else {
@@ -65,7 +90,7 @@ var createSession = function(hash, cb) {
   });
 }
 
-var getSessionByUsername = function(username, cb) {
+var getSessionByUsername = (username, cb) => {
     getUserIdByUsername(username, (err, userId) => {
       if (err) {
         console.log(err);
@@ -74,9 +99,9 @@ var getSessionByUsername = function(username, cb) {
             if (err) {
                 cb(err);
             } else if (!results.length) {
-                cb(err);
+                cb('no results', null);
             } else {
-              console.log("Get Session Results: ", results);
+              console.log("Get Session By User Results: ", results);
               cb(null, results);
             }
         });
@@ -84,7 +109,22 @@ var getSessionByUsername = function(username, cb) {
     });
 }
 
+var getSession = (hash, cb) => {
+  db.query('SELECT * FROM session WHERE hash = ?', [hash], (err, results) => {
+    if(err) {
+      cb(err);
+    } else if (!results.length) {
+      cb('no results', null);
+    } else {
+      console.log('Get Session By Hash Results ', results);
+      cb(null, results);
+    }
+  })
+}
+
 module.exports.createUser = createUser;
 module.exports.createSession = createSession;
 module.exports.getSessionByUsername = getSessionByUsername;
+module.exports.getSession = getSession;
 module.exports.createSessionWithUser = createSessionWithUser;
+module.exports.createPokemonInstance = createPokemonInstance;

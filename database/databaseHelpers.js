@@ -1,38 +1,79 @@
 const mysql = require('mysql');
+const config = require('./../config/config.js');
+console.log(config)
 
 var db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'abc12345',
-    database: 'pokemonApp'
+    host: config.host,
+    user: config.user,
+    password: config.password,
+    database: config.database
 });
 
 db.connect();
 
-var createUser = function(username) {
+var createUser = function(username, cb) {
     db.query('INSERT INTO user (username) VALUES(?)', [username], (err, results) => {
         if (err) {
-            throw err;
+            cb(err)
+        } else {
+          console.log("Create User Results:", results);
+          cb(null, results);
         }
-        console.log("Create User Results:", results);
     })
 }
 
-var createSession = function(username, hash) {
+//Helper function to get User ID
+var getUserIdByUsername = function(username, cb) {
     db.query('SELECT id FROM user WHERE username = ?', [username], (err, results) => {
-        if (!results.length) {
-            throw "No users found";
-        }
-        var userId = results[0].id;
+        if (err) {
+            cb(err);
+        } else if (!results.length) {
+            cb(err);
+        } else {
+          var userId = results[0].id;
         
+          cb(null, userId);
+        }
+    })
+}
+
+var createSession = function(username, hash, cb) {
+    getUserIdByUsername(username, (err, userId) => {
+      if (err) {
+        console.log(err);
+      }
+      else {
         db.query('INSERT INTO session (user_id, hash) VALUES (?, ?)', [userId, hash], (err, results) => {
             if (err) {
                 throw err;
+            } else {
+              console.log("Create Session Results: ", results);
+              cb(null, results);
             }
-            console.log("Create Session Results: ", results);
         });
-    })
+      }
+    });
+}
+
+var getSessionByUsername = function(username, cb) {
+    getUserIdByUsername(username, (err, userId) => {
+      if (err) {
+        console.log(err);
+      } else {
+        db.query('SELECT * FROM session WHERE id = ?', [userId], (err, results) => {
+            if (err) {
+                cb(err);
+            } else if (!results.length) {
+                cb(err);
+            } else {
+              console.log("Get Session Results: ", results);
+              cb(null, results);
+            }
+        });
+      }
+    });
 }
 
 module.exports.createUser = createUser;
 module.exports.createSession = createSession;
+module.exports.getSessionByUsername = getSessionByUsername;

@@ -66,7 +66,7 @@ var createSessionWithUser = function(username, hash, cb) {
 }
 
 var createSession = function(hash, cb) {
-  db.query('INSERT INTO session (hash) VALUES (?, ?)', [hash], (err, results) => {
+  db.query('INSERT INTO session (hash) VALUES (?)', [hash], (err, results) => {
       if (err) {
           throw err;
       } else {

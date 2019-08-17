@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    searchPokemonAPI.get(pokemons => this.setState({pokemons}));
+    // searchPokemonAPI.get(pokemons => this.setState({pokemons}));
   }
   
 

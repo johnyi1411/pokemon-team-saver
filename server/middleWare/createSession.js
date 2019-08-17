@@ -13,6 +13,7 @@ module.exports.createSession = (req, res, next) => {
         res.cookie('sessionHash', hash)
         req.session = {
           hash,
+          userId: null,
         };
       };
       next();
@@ -33,6 +34,7 @@ module.exports.createSession = (req, res, next) => {
             res.cookie('sessionHash', hash)
             req.session = {
               hash,
+              userId: null
             };
           };
           next();
@@ -47,5 +49,13 @@ module.exports.createSession = (req, res, next) => {
         next();
       }
     });
+  }
+}
+
+module.exports.verifySession = (req, res, next) => {
+  if(req.session.id) {
+    next();
+  } else {
+    res.redirect('/login');
   }
 }

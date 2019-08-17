@@ -18,6 +18,8 @@ class App extends React.Component {
     this.searchOnChange = this.searchOnChange.bind(this);
   }
 
+  
+
   searchOnChange(value) {
     this.setState({ searchValue : value });
   }

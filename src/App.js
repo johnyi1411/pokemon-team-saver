@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Search from './components/Search'
 import Pokemon from './components/Pokemon'
+import searchPokemonAPI from './lib/searchPokemonAPI'
 
 class App extends React.Component {
   constructor(props) {
@@ -18,13 +19,16 @@ class App extends React.Component {
     this.searchOnChange = this.searchOnChange.bind(this);
   }
 
+  componentDidMount() {
+    searchPokemonAPI.get(pokemons => this.setState({pokemons}));
+  }
   
 
   searchOnChange(value) {
     this.setState({ searchValue : value });
   }
 
-  render () {
+  render() {
     let pokemons = [];
     this.state.pokemons.forEach((pokemon, index) => {
       if (pokemon.name.includes(this.state.searchValue)) {

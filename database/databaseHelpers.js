@@ -78,8 +78,9 @@ var createSessionWithUser = (username, hash, cb) => {
     });
 }
 
-var createSession = (hash, cb) => {
-  db.query('INSERT INTO session (hash) VALUES (?, ?)', [hash], (err, results) => {
+
+var createSession = function(hash, cb) {
+  db.query('INSERT INTO session (hash) VALUES (?)', [hash], (err, results) => {
       if (err) {
           throw err;
       } else {
@@ -116,6 +117,7 @@ var getSession = (hash, cb) => {
       cb('no results', null);
     } else {
       console.log('Get Session By Hash Results ', results);
+      cb(null, results);
     }
   })
 }

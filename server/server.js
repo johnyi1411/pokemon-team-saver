@@ -6,10 +6,36 @@ const db = require('./../database/databaseHelpers.js');
 
 app.use(express.static(__dirname + '/../public'))
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 app.get('/createUser', (req, res, next) => {
-    // db.createUser('test');
-    db.createSession('test', 'aaaaaa');
-    res.end('hit');
+    /*db.createUser('test', () => {
+        db.createSession('test', 'aaaaaa', () => {
+            db.getSessionByUsername('test', (err, results) => {
+                console.log(results);
+                res.end('hit');
+            });
+        });
+    });*/
+});
+
+//Return pokemon data (serach by id)
+app.get('/', (req, res, next) => {
+
+    var searchParam = req.body.input.toString().toLowerCase();
+    console.log("SearchParam:", `https://pokeapi.co/api/v2/pokemon/${searchParam}`);
+
+    req.get(`https://pokeapi.co/api/v2/pokemon/${searchParam}`, (err, data) => {
+        if (err) {
+            throw err;
+        }
+        if (data.body !== 'Not Found') {
+            res.send(JSON.parse(data.body).toString());
+        } else {
+            res.end('Not Found')
+        }
+    })
 })
 
 app.listen(port, () => {

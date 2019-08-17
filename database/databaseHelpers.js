@@ -108,6 +108,12 @@ var getSession = function(hash, cb) {
   })
 }
 
+var updateSession = function(hash, username) {
+  getUserIdByUsername(username, (err, result) => {
+    
+  })
+}
+
 module.exports.createUser = createUser;
 module.exports.createSession = createSession;
 module.exports.getSessionByUsername = getSessionByUsername;

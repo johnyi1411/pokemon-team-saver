@@ -65,11 +65,17 @@ app.get('/getAllPokemon', (req, res, next) => {
     })
 })
 
-app.get('/testCookies', (req, res, next) => {
+app.get('/testCookies', auth.verifySession, (req, res, next) => {
     console.log('cookies: ', req.cookies);
-    console.log('length: ', Object.keys(req.cookies).length);
-    res.cookie('testCookie', 123456789);
     res.end();
+})
+
+app.get('/login', (req, res, next) => {
+    res.send('login page');
+})
+
+app.post('/login', (req, res, next) => {
+    res.send('login post');
 })
 
 app.listen(port, () => {

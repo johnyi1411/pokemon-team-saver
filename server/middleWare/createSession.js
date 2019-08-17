@@ -1,3 +1,12 @@
 const utils = require('../lib/hashUtils.js');
 
-console.log(utils.createHash('test'));
+const creatSession = (req, res, next) => {
+  //if user has a cookie
+  if(Object.keys(req.cookies)) {
+
+  }
+  //user has no cookie
+  else {
+    
+  }
+}

@@ -87,3 +87,4 @@ var getSessionByUsername = function(username, cb) {
 module.exports.createUser = createUser;
 module.exports.createSession = createSession;
 module.exports.getSessionByUsername = getSessionByUsername;
+module.exports.createSessionWithUser = createSessionWithUser;

@@ -1,12 +1,48 @@
 const utils = require('../lib/hashUtils.js');
+const model = require('../../database/databaseHelpers.js');
 
-const creatSession = (req, res, next) => {
-  //if user has a cookie
-  if(Object.keys(req.cookies)) {
-
+module.exports.createSession = (req, res, next) => {
+  //if user has no cookie
+  if(!req.cookies.sessionHash) {
+    let rand = utils.createRandom32String();
+    let hash = utils.createHash(rand);
+    model.createSession(hash, (err, results) => {
+      if (err) {
+        console.log('ERROR FROM CREATE: ', err);
+      } else {
+        res.cookie('sessionHash', hash)
+        req.session = {
+          hash,
+        };
+      };
+      next();
+    })
   }
-  //user has no cookie
+  //user has cookie
   else {
-    
+    model.getSession(req.cookies.sessionHash, (err, results)=>{
+      //invalid cookie
+      if(err) {
+        console.log('ERROR FROM GET: ', err);
+        let rand = utils.createRandom32String();
+        let hash = utils.createHash(rand);
+        model.createSession(hash, (err, results) =>{
+          if (err) {
+            console.log('ERROR FROM CREATE: ', err);
+          } else {
+            res.cookie('sessionHash', hash)
+            req.session = {
+              hash,
+            };
+          };
+          next();
+        })
+      //valid cookie
+      } else {
+        req.session = {
+          hash: req.cookies.sessionHash,
+        }
+      }
+    });
   }
 }

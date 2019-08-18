@@ -3,6 +3,7 @@ import Search from './components/Search'
 import Pokemon from './components/Pokemon'
 import searchPokemonAPI from './lib/searchPokemonAPI'
 import helperFunctions from './lib/helperFunctions'
+import CurrentTeam from './components/CurrentTeam'
 
 class App extends React.Component {
   constructor(props) {
@@ -48,17 +49,17 @@ class App extends React.Component {
       if (pokemon.name.includes(this.state.searchValue)) {
         pokemons.push(<Pokemon key={index} pokemon={pokemon}/>)
       }
-    })
+    });
 
     return (
       <div className="App">
-        <Search searchOnChange={this.searchOnChange}/>
-        <div>
-          {/* <CurrentTeam/> */}
-        </div>
+        <Search searchOnChange={this.searchOnChange} searchValue={this.state.searchValue}/>
         <div className="pokemontable">
-          {pokemons}
+          <CurrentTeam pokemons={this.state.pokemons}/>
         </div>
+        {/* <div className="pokemontable">
+          {pokemons}
+        </div> */}
       </div>
     );
   }

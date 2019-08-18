@@ -68,8 +68,20 @@ var createUser = ({username, password}) => {
     password: utils.createHash(password, salt),
     salt,
   };
-  console.log('password created: ', newUser.password);
   return User.findOrCreate({where: {username: newUser.username}, defaults: newUser});
+};
+
+module.exports.verifyUser = ({username, password}) => {
+  return User.findOne({where: {username}}).then(user => {
+    if(user) {
+      let attempted = password;
+      let stored = user.password;
+      let salt = user.salt;
+      return utils.compareHash(attempted, stored, salt);
+    } else {
+      return false;
+    }
+  });
 };
 
 var createPokemonInstance = (pokemonId, username, name, level) => {
@@ -155,7 +167,7 @@ var updateSession = function(hash, username, cb) {
   return getUserIdByUsername(username)
   .then(userId => {
     if (userId) {
-      return Session.update({hash: hash}, {where: {user_id: userId}});
+      return Session.update({user_id: userId}, {where: {hash}});
     }
   })
 };

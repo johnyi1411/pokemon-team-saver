@@ -94,6 +94,11 @@ app.get('/testSQL', (req, res, next) => {
 });
 
 // ******************* POST *******************
+app.post('/signup', (req, res, next) => {
+  console.log('username and pass: ', req.body);
+  //create user with user and pass
+  res.send('signed up!');
+});
 /*
 for post to '/login', client must send json obj with shape: 
 {

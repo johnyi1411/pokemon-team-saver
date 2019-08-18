@@ -1,0 +1,16 @@
+.pokemontable {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pokemon {
+  margin: 10px;
+}
+
+.currentteam {
+  width: 350px
+}
+
+#trainer {
+  height: 125px;
+}

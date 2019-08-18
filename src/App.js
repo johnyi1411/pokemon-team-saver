@@ -19,7 +19,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    searchPokemonAPI.get(pokemons => this.setState({pokemons}));
+    searchPokemonAPI.get(pokemons => {
+      pokemons.data.results.forEach(pokemon => {
+        pokemon.id = pokemon.url.slice(34, pokemon.url.length - 1);
+      })
+      this.setState({pokemons: pokemons.data.results});
+      });
   }
   
 

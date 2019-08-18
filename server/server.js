@@ -53,7 +53,7 @@ app.get('/getPokemon', (req, res, next) => {
 //Return pokemon data (serach by id)
 app.get('/getAllPokemon', (req, res, next) => {
   console.log('searching...');
-  request.get('https://pokeapi.co/api/v2/pokemon/?limit=20000', (err, data) => {
+  request.get('https://pokeapi.co/api/v2/pokemon/?limit=807', (err, data) => {
     if (err) {
       throw err;
     }

@@ -3,4 +3,9 @@ const lowerCaseAlphabet = () => {
   return alphabet;
 }
 
-export default {lowerCaseAlphabet};
+const numbersInString = () => {
+  let numbers = '1234567890'.split('');
+  return numbers;
+}
+
+export default {lowerCaseAlphabet, numbersInString};

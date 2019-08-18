@@ -47,7 +47,7 @@ class CurrentTeam extends React.Component {
   render () {
     let pokemons = [];
     this.state.pokemons.forEach((pokemon, index) => {
-      pokemons.push(<Pokemon key={index} pokemon={pokemon}/>)
+      pokemons.push(<Pokemon searchedPokemon={false} key={index} pokemon={pokemon}/>)
     });
     return (
       <div className="currentteam">

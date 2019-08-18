@@ -130,8 +130,8 @@ app.post('/login', (req, res, next) => {
 app.post('/signout', (req, res, next) => {
   dbAsync.deleteSession(req.session.hash).then(result => {
     res.send();
-  })
-})
+  });
+});
 
 app.post('/addPokemonToUser', (req, res, next) => {
   console.log(req.body);

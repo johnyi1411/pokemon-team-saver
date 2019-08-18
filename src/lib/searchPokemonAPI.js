@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const searchPokemonAPI = {
-  get: (callback) => {
+  getAll: (callback) => {
     axios.get('/getAllPokemon')
       .then(response => {
         callback(response);

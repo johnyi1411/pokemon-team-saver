@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const config = require('../config/config.js');
 const Sequelize = require('sequelize');
+const utils = require('../server/lib/hashUtils.js');
 
 const sequelize = new Sequelize(config.database, config.user, config.password, {
   host: config.host,
@@ -57,107 +58,120 @@ Session.sync();
 /*
 user = {
   username,
-  password, (hash)
-  salt
+  password,
 }
 */
-var createUser = (user) => {
-  return User.findOrCreate({where: user});
+module.exports.createUser = ({username, password}) => {
+  let salt = utils.createRandom32String();
+  newUser = {
+    username,
+    password: utils.createHash(password, salt),
+    salt,
+  };
+  return User.findOrCreate({where: {username: newUser.username}, defaults: newUser});
 };
 
-var createPokemonInstance = (pokemonId, username, name, level) => {
+module.exports.verifyUser = ({username, password}) => {
+  return User.findOne({where: {username}}).then(user => {
+    if (user) {
+      let attempted = password;
+      let stored = user.password;
+      let salt = user.salt;
+      return utils.compareHash(attempted, stored, salt);
+    } else {
+      return false;
+    }
+  });
+};
+
+module.exports.createPokemonInstance = (pokemonId, username, name, level) => {
 
   return getUserIdByUsername(username)
-  .then(data => {
-    if (data) {
-      return PokemonInstance.create({
-        pokemon_id: pokemonId,
-        user_id: data,
-        name: name,
-        level: level
-      })
-    }
-  })
+    .then(data => {
+      if (data) {
+        return PokemonInstance.create({
+          pokemon_id: pokemonId,
+          user_id: data,
+          name: name,
+          level: level
+        });
+      }
+    });
 }; 
 
 //Helper function to get User ID
-var getUserIdByUsername = (username) => {
+module.exports.getUserIdByUsername = (username) => {
   
   return User.findOne({where: {username: username}})
-  .then(data => {
-    if (data && data.id) {
-      return data.id;
-    } else {
-      console.log('no matching user found or something went wrong');
-    }
-  })
+    .then(data => {
+      if (data && data.id) {
+        return data.id;
+      } else {
+        console.log('no matching user found or something went wrong');
+      }
+    });
 };
 
-var createSessionWithUser = (username, hash) => {
+module.exports.createSessionWithUser = (username, hash) => {
 
   return getUserIdByUsername(username)
-  .then(userId => {
-    if (userId) {
-      return Session.findOne({where: {user_id: userId}})
-      .then(data => {
-        if (data) {
-          return Session.update({hash: hash}, {where: {user_id: userId}});
-        } else {
-          return Session.create({user_id: userId, hash: hash});
-        }
-      })
-    }
-  })
+    .then(userId => {
+      if (userId) {
+        return Session.findOne({where: {user_id: userId}})
+          .then(data => {
+            if (data) {
+              return Session.update({hash: hash}, {where: {user_id: userId}});
+            } else {
+              return Session.create({user_id: userId, hash: hash});
+            }
+          });
+      }
+    });
 };
 
 
-var createSession = function(hash) {
+module.exports.createSession = function(hash) {
 
   return Session.create({
     hash: hash
   });
 };
 
-var getSessionByUsername = (username) => {
+module.exports.getSessionByUsername = (username) => {
 
   return getUserIdByUsername(username)
-  .then(userId => {
-    if (userId) {
-      return Session.findOne({where: {user_id: userId}});
-    }
-  })
-  .then(data => {
-    if (data) {
-      return data.dataValues;
-    }
-  })
+    .then(userId => {
+      if (userId) {
+        return Session.findOne({where: {user_id: userId}});
+      }
+    })
+    .then(data => {
+      if (data) {
+        return data.dataValues;
+      }
+    });
 };
 
-var getSession = (hash) => {
+module.exports.getSession = (hash) => {
 
   return Session.findOne({where: {hash: hash}})
-  .then(data => {
-    if (data) {
-      console.log(data.dataValues)
-      return data.dataValues;
-    }
-  });
+    .then(data => {
+      if (data) {
+        console.log(data.dataValues);
+        return data.dataValues;
+      }
+    });
 };
 
-var updateSession = function(hash, username, cb) {
+module.exports.updateSession = function(hash, username, cb) {
   return getUserIdByUsername(username)
-  .then(userId => {
-    if (userId) {
-      return Session.update({hash: hash}, {where: {user_id: userId}});
-    }
-  })
+    .then(userId => {
+      if (userId) {
+        return Session.update({user_id: userId}, {where: {hash}});
+      }
+    });
 };
 
-module.exports.createUser = createUser;
-module.exports.createSession = createSession;
-module.exports.getSessionByUsername = getSessionByUsername;
-module.exports.getSession = getSession;
-module.exports.createSessionWithUser = createSessionWithUser;
-module.exports.createPokemonInstance = createPokemonInstance;
-module.exports.updateSession = updateSession;
-module.exports.getUserIdByUsername = getUserIdByUsername;
+module.exports.deleteSession = (hash) => {
+  return Session.destroy( {where: {hash}});
+};

@@ -96,29 +96,40 @@ app.get('/testSQL', (req, res, next) => {
 });
 
 // ******************* POST *******************
+/*
+for post to '/signup', client must send json obj with shape: 
+{
+  "username": <username>,
+  "password": <password>,
+}
+*/
 app.post('/signup', (req, res, next) => {
-  console.log('username and pass: ', req.body);
-  //create user with user and pass;
-  let {username, password} = req.body;
-  console.log('username: ', username);
-  console.log('password: ', password);
-  res.send('signed up!');
+  dbAsync.createUser(req.body).then((result)=>{
+    res.send({sucessful: result[1]});
+  });
 });
 /*
 for post to '/login', client must send json obj with shape: 
 {
-  "username": <username>
+  "username": <username>,
+  "password": <password>,
 }
 */
 app.post('/login', (req, res, next) => {
-  db.updateSession(req.session.hash, req.body.username, (err, result) => {
-    if (err) {
-      console.log('ERROR: ', err);
-      res.send(err);
+  dbAsync.verifyUser(req.body).then(result => {
+    if (result) {
+      dbAsync.updateSession(req.session.hash, req.body.username).then(result => {
+        res.send(true);
+      });
     } else {
-      console.log('RESULT: ', result);
-      res.send(result);
+      res.send(false);
     }
+  });
+});
+
+app.post('/signout', (req, res, next) => {
+  dbAsync.deleteSession(req.session.hash).then(result => {
+    res.send();
   });
 });
 

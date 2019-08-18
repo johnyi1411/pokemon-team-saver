@@ -4,6 +4,7 @@ const port = 4000;
 const path = require('path');
 const auth = require('./middleWare/createSession.js');
 const db = require('./../database/databaseHelpers.js');
+const dbAsync = require('./../database/databaseHelpersAsync.js');
 const request = require('request');
 const cookieParser = require('cookie-parser');
 
@@ -97,7 +98,10 @@ app.get('/testSQL', (req, res, next) => {
 // ******************* POST *******************
 app.post('/signup', (req, res, next) => {
   console.log('username and pass: ', req.body);
-  //create user with user and pass
+  //create user with user and pass;
+  let {username, password} = req.body;
+  console.log('username: ', username);
+  console.log('password: ', password);
   res.send('signed up!');
 });
 /*

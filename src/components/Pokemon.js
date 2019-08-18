@@ -2,7 +2,7 @@ import React from 'react';
 
 const Pokemon = (props) => {
   return (
-    <div>
+    <div className="pokemon">
       <div>
         <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.pokemon.id}.png`} alt={props.pokemon.name}></img>
       </div>

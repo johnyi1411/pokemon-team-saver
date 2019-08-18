@@ -46,7 +46,7 @@ class App extends React.Component {
         <div>
           {/* <CurrentTeam/> */}
         </div>
-        <div>
+        <div className="pokemontable">
           {pokemons}
         </div>
       </div>

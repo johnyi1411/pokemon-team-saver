@@ -11,8 +11,6 @@ class App extends React.Component {
     this.state = {
       indexView: true
     }
-
-    this.searchOnChange = this.searchOnChange.bind(this);
   }
 
   componentDidMount() {
@@ -24,25 +22,12 @@ class App extends React.Component {
     //   });
   }
 
-  searchOnChange(value) {
-    let allowedChars = helperFunctions.lowerCaseAlphabet().concat(['-']);
-    allowedChars = allowedChars.concat(helperFunctions.numbersInString());
-    let lowerCaseValue = value.toLowerCase();
-    for (let i = 0; i < lowerCaseValue.length; i++) {
-      if (!allowedChars.includes(lowerCaseValue[i])) {
-        this.setState({ searchValue: 'Error' })
-        return;
-      }
-    }
-    this.setState({ searchValue : lowerCaseValue });
-  }
-
   render() {
     let search;
     if (this.state.indexView) {
       search = <button onClick={() => this.setState({indexView: false})}>Create your own team</button>
     } else {
-      search = <Search searchOnChange={this.searchOnChange} searchValue={this.state.searchValue}/>
+      search = <Search/>
     }
 
     return (

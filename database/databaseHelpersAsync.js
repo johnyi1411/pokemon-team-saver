@@ -61,7 +61,7 @@ user = {
   password,
 }
 */
-var createUser = ({username, password}) => {
+module.exports.createUser = ({username, password}) => {
   let salt = utils.createRandom32String();
   newUser = {
     username,
@@ -84,7 +84,7 @@ module.exports.verifyUser = ({username, password}) => {
   });
 };
 
-var createPokemonInstance = (pokemonId, username, name, level) => {
+module.exports.createPokemonInstance = (pokemonId, username, name, level) => {
 
   return getUserIdByUsername(username)
   .then(data => {
@@ -100,7 +100,7 @@ var createPokemonInstance = (pokemonId, username, name, level) => {
 }; 
 
 //Helper function to get User ID
-var getUserIdByUsername = (username) => {
+module.exports.getUserIdByUsername = (username) => {
   
   return User.findOne({where: {username: username}})
   .then(data => {
@@ -112,7 +112,7 @@ var getUserIdByUsername = (username) => {
   })
 };
 
-var createSessionWithUser = (username, hash) => {
+module.exports.createSessionWithUser = (username, hash) => {
 
   return getUserIdByUsername(username)
   .then(userId => {
@@ -130,14 +130,14 @@ var createSessionWithUser = (username, hash) => {
 };
 
 
-var createSession = function(hash) {
+module.exports.createSession = function(hash) {
 
   return Session.create({
     hash: hash
   });
 };
 
-var getSessionByUsername = (username) => {
+module.exports.getSessionByUsername = (username) => {
 
   return getUserIdByUsername(username)
   .then(userId => {
@@ -152,7 +152,7 @@ var getSessionByUsername = (username) => {
   })
 };
 
-var getSession = (hash) => {
+module.exports.getSession = (hash) => {
 
   return Session.findOne({where: {hash: hash}})
   .then(data => {
@@ -163,7 +163,7 @@ var getSession = (hash) => {
   });
 };
 
-var updateSession = function(hash, username, cb) {
+module.exports.updateSession = function(hash, username, cb) {
   return getUserIdByUsername(username)
   .then(userId => {
     if (userId) {
@@ -172,11 +172,6 @@ var updateSession = function(hash, username, cb) {
   })
 };
 
-module.exports.createUser = createUser;
-module.exports.createSession = createSession;
-module.exports.getSessionByUsername = getSessionByUsername;
-module.exports.getSession = getSession;
-module.exports.createSessionWithUser = createSessionWithUser;
-module.exports.createPokemonInstance = createPokemonInstance;
-module.exports.updateSession = updateSession;
-module.exports.getUserIdByUsername = getUserIdByUsername;
+module.exports.deleteSession = (hash) => {
+  return Session.destroy( {where: {hash}});
+}

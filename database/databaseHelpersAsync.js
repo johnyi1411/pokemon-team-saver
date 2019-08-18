@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const config = require('../config/config.js');
 const Sequelize = require('sequelize');
+const utils = require('../server/lib/hashUtils.js');
 
 const sequelize = new Sequelize(config.database, config.user, config.password, {
   host: config.host,
@@ -57,12 +58,18 @@ Session.sync();
 /*
 user = {
   username,
-  password, (hash)
-  salt
+  password,
 }
 */
-var createUser = (user) => {
-  return User.findOrCreate({where: user});
+var createUser = ({username, password}) => {
+  let salt = utils.createRandom32String();
+  newUser = {
+    username,
+    password: utils.createHash(password, salt),
+    salt,
+  };
+  console.log('password created: ', newUser.password);
+  return User.findOrCreate({where: {username: newUser.username}, defaults: newUser});
 };
 
 var createPokemonInstance = (pokemonId, username, name, level) => {

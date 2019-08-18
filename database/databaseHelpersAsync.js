@@ -73,7 +73,7 @@ module.exports.createUser = ({username, password}) => {
 
 module.exports.verifyUser = ({username, password}) => {
   return User.findOne({where: {username}}).then(user => {
-    if(user) {
+    if (user) {
       let attempted = password;
       let stored = user.password;
       let salt = user.salt;
@@ -87,46 +87,46 @@ module.exports.verifyUser = ({username, password}) => {
 module.exports.createPokemonInstance = (pokemonId, username, name, level) => {
 
   return getUserIdByUsername(username)
-  .then(data => {
-    if (data) {
-      return PokemonInstance.create({
-        pokemon_id: pokemonId,
-        user_id: data,
-        name: name,
-        level: level
-      })
-    }
-  })
+    .then(data => {
+      if (data) {
+        return PokemonInstance.create({
+          pokemon_id: pokemonId,
+          user_id: data,
+          name: name,
+          level: level
+        });
+      }
+    });
 }; 
 
 //Helper function to get User ID
 module.exports.getUserIdByUsername = (username) => {
   
   return User.findOne({where: {username: username}})
-  .then(data => {
-    if (data && data.id) {
-      return data.id;
-    } else {
-      console.log('no matching user found or something went wrong');
-    }
-  })
+    .then(data => {
+      if (data && data.id) {
+        return data.id;
+      } else {
+        console.log('no matching user found or something went wrong');
+      }
+    });
 };
 
 module.exports.createSessionWithUser = (username, hash) => {
 
   return getUserIdByUsername(username)
-  .then(userId => {
-    if (userId) {
-      return Session.findOne({where: {user_id: userId}})
-      .then(data => {
-        if (data) {
-          return Session.update({hash: hash}, {where: {user_id: userId}});
-        } else {
-          return Session.create({user_id: userId, hash: hash});
-        }
-      })
-    }
-  })
+    .then(userId => {
+      if (userId) {
+        return Session.findOne({where: {user_id: userId}})
+          .then(data => {
+            if (data) {
+              return Session.update({hash: hash}, {where: {user_id: userId}});
+            } else {
+              return Session.create({user_id: userId, hash: hash});
+            }
+          });
+      }
+    });
 };
 
 
@@ -140,38 +140,38 @@ module.exports.createSession = function(hash) {
 module.exports.getSessionByUsername = (username) => {
 
   return getUserIdByUsername(username)
-  .then(userId => {
-    if (userId) {
-      return Session.findOne({where: {user_id: userId}});
-    }
-  })
-  .then(data => {
-    if (data) {
-      return data.dataValues;
-    }
-  })
+    .then(userId => {
+      if (userId) {
+        return Session.findOne({where: {user_id: userId}});
+      }
+    })
+    .then(data => {
+      if (data) {
+        return data.dataValues;
+      }
+    });
 };
 
 module.exports.getSession = (hash) => {
 
   return Session.findOne({where: {hash: hash}})
-  .then(data => {
-    if (data) {
-      console.log(data.dataValues)
-      return data.dataValues;
-    }
-  });
+    .then(data => {
+      if (data) {
+        console.log(data.dataValues);
+        return data.dataValues;
+      }
+    });
 };
 
 module.exports.updateSession = function(hash, username, cb) {
   return getUserIdByUsername(username)
-  .then(userId => {
-    if (userId) {
-      return Session.update({user_id: userId}, {where: {hash}});
-    }
-  })
+    .then(userId => {
+      if (userId) {
+        return Session.update({user_id: userId}, {where: {hash}});
+      }
+    });
 };
 
 module.exports.deleteSession = (hash) => {
   return Session.destroy( {where: {hash}});
-}
+};

@@ -2,6 +2,7 @@ import React from 'react';
 import Search from './components/Search'
 import Pokemon from './components/Pokemon'
 import searchPokemonAPI from './lib/searchPokemonAPI'
+import helperFunctions from './lib/helperFunctions'
 
 class App extends React.Component {
   constructor(props) {
@@ -10,8 +11,9 @@ class App extends React.Component {
       searchValue: '',
       pokemons: [
         {
-          name: 'scyther',
-          id: 123
+          name: "bulbasaur",
+          url: "https://pokeapi.co/api/v2/pokemon/1/",
+          id: "1"
         }
       ]
     }
@@ -29,7 +31,15 @@ class App extends React.Component {
   
 
   searchOnChange(value) {
-    this.setState({ searchValue : value });
+    let allowedChars = helperFunctions.lowerCaseAlphabet().concat(['-']);
+    let lowerCaseValue = value.toLowerCase();
+    for (let i = 0; i < lowerCaseValue.length; i++) {
+      if (!allowedChars.includes(lowerCaseValue[i])) {
+        this.setState({ searchValue: 'Error' })
+        return;
+      }
+    }
+    this.setState({ searchValue : lowerCaseValue });
   }
 
   render() {

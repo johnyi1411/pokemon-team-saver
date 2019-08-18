@@ -54,7 +54,7 @@ app.get('/getPokemon', (req, res, next) => {
 app.get('/getAllPokemon', (req, res, next) => {
   console.log('searching...');
   //first gen pokemon for get all.
-  request.get('https://pokeapi.co/api/v2/pokemon/?limit=151', (err, data) => {
+  request.get('https://pokeapi.co/api/v2/pokemon/?limit=6', (err, data) => {
     if (err) {
       throw err;
     }

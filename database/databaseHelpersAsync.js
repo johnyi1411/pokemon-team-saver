@@ -33,7 +33,9 @@ var db = mysql.createConnection({
 db.connect();
 
 const User = sequelize.define('user', {
-  username: Sequelize.STRING
+  username: Sequelize.STRING,
+  password: Sequelize.STRING,
+  salt: Sequelize.STRING
 });
 
 const PokemonInstance = sequelize.define('pokemon_instance', {
@@ -48,10 +50,15 @@ const Session = sequelize.define('session', {
   hash: Sequelize.STRING
 })
 
-
-var createUser = (username) => {
-
-  return User.findOrCreate({where: {username: username}});
+/*
+user = {
+  username,
+  password, (hash)
+  salt
+}
+*/
+var createUser = (user) => {
+  return User.findOrCreate({where: user});
 };
 
 var createPokemonInstance = (pokemonId, username, name, level) => {

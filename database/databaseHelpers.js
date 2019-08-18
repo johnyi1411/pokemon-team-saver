@@ -121,9 +121,21 @@ var getSession = (hash, cb) => {
   });
 };
 
-var updateSession = function(hash, username) {
-  getUserIdByUsername(username, (err, result) => {
-    
+var updateSession = function(hash, username, cb) {
+  getUserIdByUsername(username, (err, userId) => {
+    console.log('result from update session, user: ', userId);
+    if (err) {
+      cb(err, null);
+    } else {
+      db.query('UPDATE session SET user_id = ? WHERE hash = ?', [userId, hash], (err, result) => {
+        if (err) {
+          cb(err);
+        } else {
+          cb(null, result);
+        }
+        
+      });
+    }
   });
 };
 
@@ -133,3 +145,4 @@ module.exports.getSessionByUsername = getSessionByUsername;
 module.exports.getSession = getSession;
 module.exports.createSessionWithUser = createSessionWithUser;
 module.exports.createPokemonInstance = createPokemonInstance;
+module.exports.updateSession = updateSession;

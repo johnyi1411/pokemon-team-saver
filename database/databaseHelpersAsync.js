@@ -48,7 +48,11 @@ const PokemonInstance = sequelize.define('pokemon_instance', {
 const Session = sequelize.define('session', {
   user_id: Sequelize.INTEGER,
   hash: Sequelize.STRING
-})
+});
+
+User.sync();
+PokemonInstance.sync();
+Session.sync();
 
 /*
 user = {

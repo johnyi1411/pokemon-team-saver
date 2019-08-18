@@ -72,16 +72,19 @@ app.get('/testCookies', auth.verifySession, (req, res, next) => {
   res.end();
 });
 
-app.get('/login', (req, res, next) => {
-  res.send('login page');
+app.get('/verifySession', (req, res, next) => {
+  if (req.session.userId) {
+    res.send('user is logged in');
+  } else {
+    res.send('user is not logged in');
+  }
 });
 
-app.post('/login', (req, res, next) => {
-  res.send('login post');
-});
+
+
 
 app.get('/testSQL', (req, res, next) => {
-
+  
   db.createUser('test', () => {
     db.createPokemonInstance('25', 'test', null, null, (err, results) => {
       console.log('ERROR:', err);
@@ -92,13 +95,36 @@ app.get('/testSQL', (req, res, next) => {
 });
 
 // ******************* POST *******************
+app.post('/signup', (req, res, next) => {
+  console.log('username and pass: ', req.body);
+  //create user with user and pass
+  res.send('signed up!');
+});
+/*
+for post to '/login', client must send json obj with shape: 
+{
+  "username": <username>
+}
+*/
+app.post('/login', (req, res, next) => {
+  db.updateSession(req.session.hash, req.body.username, (err, result) => {
+    if (err) {
+      console.log('ERROR: ', err);
+      res.send(err);
+    } else {
+      console.log('RESULT: ', result);
+      res.send(result);
+    }
+  });
+});
+
 app.post('/addPokemonToUser', (req, res, next) => {
   console.log(req.body);
   var user = req.body.username;
   var pokemonId = req.body.pokemonId;
   var name = req.body.name;
   var level = req.body.level;
-
+  
   db.createPokemonInstance(pokemonId, user, name, level, (err, results) => {
     if (err) {
       console.log(err);

@@ -39,7 +39,8 @@ module.exports.createSession = (req, res, next) => {
         });
       //valid cookie
       } else {
-        let userId = results[0].id;
+        console.log('valid cookie ', results[0].user_id);
+        let userId = results[0].user_id;
         req.session = {
           hash: req.cookies.sessionHash,
           userId
@@ -51,7 +52,7 @@ module.exports.createSession = (req, res, next) => {
 };
 
 module.exports.verifySession = (req, res, next) => {
-  if (req.session.id) {
+  if (req.session.userId) {
     next();
   } else {
     res.redirect('/login');

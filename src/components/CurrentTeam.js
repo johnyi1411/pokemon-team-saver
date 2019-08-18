@@ -52,7 +52,7 @@ class CurrentTeam extends React.Component {
     return (
       <div className="currentteam">
         <Trainer/>
-        <div>
+        <div className="pokemontable">
           {pokemons}
         </div>
       </div>

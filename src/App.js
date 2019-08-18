@@ -10,13 +10,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchValue: '',
-      pokemons: [
-        {
-          name: "bulbasaur",
-          url: "https://pokeapi.co/api/v2/pokemon/1/",
-          id: "1"
-        }
-      ]
+      pokemons: []
     }
     this.searchOnChange = this.searchOnChange.bind(this);
   }
@@ -29,7 +23,6 @@ class App extends React.Component {
       this.setState({pokemons: pokemons.data.results});
       });
   }
-  
 
   searchOnChange(value) {
     let allowedChars = helperFunctions.lowerCaseAlphabet().concat(['-']);
@@ -44,22 +37,11 @@ class App extends React.Component {
   }
 
   render() {
-    let pokemons = [];
-    this.state.pokemons.forEach((pokemon, index) => {
-      if (pokemon.name.includes(this.state.searchValue)) {
-        pokemons.push(<Pokemon key={index} pokemon={pokemon}/>)
-      }
-    });
 
     return (
       <div className="App">
         <Search searchOnChange={this.searchOnChange} searchValue={this.state.searchValue}/>
-        <div className="pokemontable">
-          <CurrentTeam pokemons={this.state.pokemons}/>
-        </div>
-        {/* <div className="pokemontable">
-          {pokemons}
-        </div> */}
+        <CurrentTeam pokemons={this.state.pokemons}/>
       </div>
     );
   }

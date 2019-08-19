@@ -15,6 +15,7 @@ class Search extends React.Component {
     }
     this.searchOnChange = this.searchOnChange.bind(this);
     this.autoCompleteGenerator = this.autoCompleteGenerator.bind(this);
+    this.changeSearchedPokemon = this.changeSearchedPokemon.bind(this);
   }
 
   componentDidMount() {
@@ -51,7 +52,9 @@ class Search extends React.Component {
   }
 
   changeSearchedPokemon (pokemonName) {
-    
+    searchPokemonAPI.getOne(pokemonName, (pokemon) => {
+      this.setState({searchedPokemon: pokemon});
+    })
   }
 
   render () {
@@ -65,7 +68,7 @@ class Search extends React.Component {
 
     for (let i = 0; i < this.state.autoSearchFirstFive.length; i++) {
       autoCompletes.push(
-        <AutoCompleteSelection pokemon={this.state.autoSearchFirstFive[i]}/>
+        <AutoCompleteSelection pokemon={this.state.autoSearchFirstFive[i]} changeSearchedPokemon={this.changeSearchedPokemon}/>
       )
     }
 

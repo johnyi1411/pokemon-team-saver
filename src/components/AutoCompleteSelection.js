@@ -2,7 +2,7 @@ import React from 'react';
 
 const AutoCompleteSelection = (props) => {
   return (
-    <p>{props.pokemon}</p>
+    <p onClick={() => props.changeSearchedPokemon(props.pokemon)}>{props.pokemon}</p>
   );
 };
 

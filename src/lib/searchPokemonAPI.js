@@ -12,15 +12,25 @@ const searchPokemonAPI = {
   },
 
   getOne: (pokemonName, callback) => {
-    axios.get('/getPokemon', { param: {
-      input: pokemonName
-    }})
+    axios.post('/getPokemon', {
+      data: {
+        input: pokemonName
+      }
+    })
       .then(response => {
         callback(response);
       })
       .catch(error => {
         console.log('Error retrieving searched pokemon', error);
       })
+    // fetch(`/getPokemon?input=${pokemonName}`)
+    //   .then((response) => {
+    //     callback(response);
+    //   })
+    //   .then((error) => {
+    //     console.log('Error retrieving searched pokemon', error);
+    //   });
+
   }
 };
 

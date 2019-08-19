@@ -7,12 +7,15 @@ const db = require('./../database/databaseHelpers.js');
 const dbAsync = require('./../database/databaseHelpersAsync.js');
 const request = require('request');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 app.use(require('morgan')('dev'));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/../public'));
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// app.use(express.json());
+// app.use(express.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(auth.createSession);
 
 // ******************* GET *******************
@@ -29,9 +32,10 @@ app.get('/createUser', (req, res, next) => {
 });
 
 //Return pokemon data (serach by id)
-app.get('/getPokemon', (req, res, next) => {
-  if (req.body) {
-    var searchParam = req.body.input.toString().toLowerCase();
+app.post('/getPokemon', (req, res, next) => {
+  if (req.body.data) {
+    console.log('req.body', req.body.data);
+    var searchParam = req.body.data.input.toString().toLowerCase();
 
     console.log('SearchParam:', `https://pokeapi.co/api/v2/pokemon/${searchParam}`);
 

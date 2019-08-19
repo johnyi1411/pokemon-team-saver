@@ -2,6 +2,7 @@ import React from 'react';
 import helperFunctions from '../lib/helperFunctions'
 import searchPokemonAPI from '../lib/searchPokemonAPI'
 import AutoCompleteSelection from './AutoCompleteSelection';
+import Pokemon from './Pokemon';
 
 class Search extends React.Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class Search extends React.Component {
     this.state = {
       searchValue: '',
       pokemons: [],
-      autoSearchFirstFive: []
+      autoSearchFirstFive: [],
+      searchedPokemon: {}
     }
     this.searchOnChange = this.searchOnChange.bind(this);
     this.autoCompleteGenerator = this.autoCompleteGenerator.bind(this);
@@ -48,6 +50,10 @@ class Search extends React.Component {
     }
   }
 
+  changeSearchedPokemon (pokemonName) {
+    
+  }
+
   render () {
     let badSearch;
     
@@ -69,6 +75,7 @@ class Search extends React.Component {
         <button>Find Pokemon</button>
         {badSearch}
         {autoCompletes}
+        <Pokemon pokemon={this.state.searchedPokemon} searchedPokemon={true}/>
       </div>
     );
   }

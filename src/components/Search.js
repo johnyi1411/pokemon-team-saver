@@ -1,6 +1,7 @@
 import React from 'react';
 import helperFunctions from '../lib/helperFunctions'
 import searchPokemonAPI from '../lib/searchPokemonAPI'
+import AutoCompleteSelection from './AutoCompleteSelection';
 
 class Search extends React.Component {
   constructor(props) {
@@ -54,12 +55,20 @@ class Search extends React.Component {
       badSearch = <p id="searcherror">Only letters, numbers and '-' allowed</p>
     }
 
+    let autoCompletes = [];
+
+    for (let i = 0; i < this.state.autoSearchFirstFive.length; i++) {
+      autoCompletes.push(
+        <AutoCompleteSelection pokemon={this.state.autoSearchFirstFive[i]}/>
+      )
+    }
 
     return (
       <div>
         <input type="text" onChange={(e) => this.searchOnChange  (e.target.value)}></input>
         <button>Find Pokemon</button>
         {badSearch}
+        {autoCompletes}
       </div>
     );
   }

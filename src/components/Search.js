@@ -75,7 +75,7 @@ class Search extends React.Component {
     let pokemon;
 
     if (this.state.searchedPokemon.name) {
-      pokemon = <Pokemon pokemon={this.state.searchedPokemon} searchedPokemon={true}/>
+      pokemon = <Pokemon pokemon={this.state.searchedPokemon} searchedPokemon={true} addToCurrentTeam={this.props.addToCurrentTeam}/>
     }
 
     return (

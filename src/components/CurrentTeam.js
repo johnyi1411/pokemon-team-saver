@@ -6,51 +6,13 @@ class CurrentTeam extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pokemons: [
-        {
-          name: 'charizard',
-          url: 'https://pokeapi.co/api/v2/pokemon/6/',
-          id: 6
-        },
-        {
-          name: 'charizard',
-          url: 'https://pokeapi.co/api/v2/pokemon/6/',
-          id: 6
-        },
-        {
-          name: 'charizard',
-          url: 'https://pokeapi.co/api/v2/pokemon/6/',
-          id: 6
-        },
-        {
-          name: 'charizard',
-          url: 'https://pokeapi.co/api/v2/pokemon/6/',
-          id: 6
-        },
-        {
-          name: 'charizard',
-          url: 'https://pokeapi.co/api/v2/pokemon/6/',
-          id: 6
-        },
-        {
-          name: 'charizard',
-          url: 'https://pokeapi.co/api/v2/pokemon/6/',
-          id: 6
-        },
-      ],
       trainer: {}
     }
-    this.clearTeam = this.clearTeam.bind(this);
-  }
-
-  clearTeam () {
-    this.setState({pokemons: []});
   }
 
   render () {
-    let pokemons = [];
-    this.state.pokemons.forEach((pokemon, index) => {
-      pokemons.push(<Pokemon searchedPokemon={false} key={index} pokemon={pokemon}/>)
+    this.props.pokemons.forEach((pokemon, index) => {
+      pokemons.push(<Pokemon searchedPokemon={false} key={index} pokemon={pokemon} deletePokemon={this.props.deletePokemon}/>)
     });
     return (
       <div className="currentteam">
@@ -58,7 +20,7 @@ class CurrentTeam extends React.Component {
         <div className="pokemontable">
           {pokemons}
         </div>
-        <button onClick={this.clearTeam}>Clear Team</button>
+        <button onClick={this.props.clearTeam}>Clear Team</button>
       </div>
     );
   }

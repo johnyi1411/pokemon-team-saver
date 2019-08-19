@@ -1,9 +1,11 @@
 import React from 'react';
 
 const Pokemon = (props) => {
-  let addButton;
+  let button;
   if (props.searchedPokemon) {
-    addButton = <button>Add</button>
+    button = <button onClick={() => props.addToCurrentTeam(props.pokemon)}>Add</button>
+  } else {
+    button = <button onClick={() => props.deletePokemon(props.pokemon)}>Delete</button>
   }
 
   return (
@@ -12,7 +14,7 @@ const Pokemon = (props) => {
         <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.pokemon.id}.png`} alt={props.pokemon.name}></img>
       </div>
       <div>{props.pokemon.name}</div>
-        {addButton}
+        {button}
     </div>
   );
 };

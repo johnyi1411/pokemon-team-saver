@@ -47,7 +47,7 @@ class Search extends React.Component {
       }
       this.setState({autoSearchFirstFive: matches.slice(0, 5)});
     } else {
-      return;
+      this.setState({autoSearchFirstFive: []});
     }
   }
 
@@ -81,7 +81,6 @@ class Search extends React.Component {
     return (
       <div>
         <input type="text" onChange={(e) => this.searchOnChange  (e.target.value)}></input>
-        <button>Find Pokemon</button>
         {badSearch}
         {autoCompletes}
         {pokemon}

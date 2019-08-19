@@ -40,9 +40,12 @@ class CurrentTeam extends React.Component {
       ],
       trainer: {}
     }
+    this.clearTeam = this.clearTeam.bind(this);
   }
 
-
+  clearTeam () {
+    this.setState({pokemons: []});
+  }
 
   render () {
     let pokemons = [];
@@ -55,6 +58,7 @@ class CurrentTeam extends React.Component {
         <div className="pokemontable">
           {pokemons}
         </div>
+        <button onClick={this.clearTeam}>Clear Team</button>
       </div>
     );
   }

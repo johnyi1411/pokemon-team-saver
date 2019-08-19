@@ -45,7 +45,7 @@ app.post('/getPokemon', (req, res, next) => {
       }
 
       if (data.body && data.body !== 'Not Found') {
-        res.end(JSON.parse(data.body).toString());
+        res.end(data.body);
       } else {
         res.end('Not Found');
       }

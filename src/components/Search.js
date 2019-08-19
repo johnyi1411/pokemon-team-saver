@@ -53,7 +53,7 @@ class Search extends React.Component {
 
   changeSearchedPokemon (pokemonName) {
     searchPokemonAPI.getOne(pokemonName, (pokemon) => {
-      this.setState({searchedPokemon: pokemon});
+      this.setState({searchedPokemon: pokemon.data});
     })
   }
 
@@ -72,13 +72,19 @@ class Search extends React.Component {
       )
     }
 
+    let pokemon;
+
+    if (this.state.searchedPokemon.name) {
+      pokemon = <Pokemon pokemon={this.state.searchedPokemon} searchedPokemon={true}/>
+    }
+
     return (
       <div>
         <input type="text" onChange={(e) => this.searchOnChange  (e.target.value)}></input>
         <button>Find Pokemon</button>
         {badSearch}
         {autoCompletes}
-        <Pokemon pokemon={this.state.searchedPokemon} searchedPokemon={true}/>
+        {pokemon}
       </div>
     );
   }
